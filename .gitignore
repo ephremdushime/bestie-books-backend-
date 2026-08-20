@@ -5,3 +5,5 @@ media/
 .env
 venv/
 *.egg-info/
+
+staticfiles/

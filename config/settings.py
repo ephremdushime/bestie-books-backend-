@@ -85,7 +85,15 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Local dev defaults to SQLite. Set DB_ENGINE=postgres (+ DB_* vars) in
 # .env for staging/production, matching the protocol's PostgreSQL choice.
 # ------------------------------------------------------------------
-if config("DB_ENGINE", default="sqlite") == "postgres":
+import dj_database_url
+
+DATABASE_URL = config("DATABASE_URL", default=None)
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+    }
+elif config("DB_ENGINE", default="sqlite") == "postgres":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
